@@ -1,0 +1,26 @@
+# BECOME ROOT 
+sudo su -
+cd ../..
+clear
+
+# CHANGE HOSTNAME
+vi etc/hostname   # ==> docker
+	
+# CREATE ANSADMIN USER
+useradd ansadmin
+passwd ansadmin
+
+#MAKE USER HAVE ROOT ACCESS
+visudo   # ==> ansadmin ALL(ALL)       NOPASSWD:ALL
+	
+# ENABLE PASSWORDLESS AUTHENTICATION
+vi etc/ssh/sshd_config   # ==>  PasswordAuthentication yes
+				#PasswordAuthentication no
+
+# RESTART SSHD SERVICE
+sudo systemctl restart sshd
+
+# CREATE DOCKER FOLDER AND GRANT ANSADMIN OWNERSHIP
+cd opt/
+sudo mkdir docker
+sudo chown ansadmin:ansadmin docker

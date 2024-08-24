@@ -1,0 +1,26 @@
+
+MAVEN
+Amazon Linux 2 Free Tier
+
+install java*
+
+sudo yum install java -y
+echo 'export JAVA_HOME="/usr/lib/jvm/java-17-amazon-corretto.x86_64"' >> ~/.bash_profile
+
+
+UBUNTU 
+t3.medium
+
+apt install openjdk-17-jdk openjdk-17-jre -y
+
+
+TO GET JAVA_HOME PATH
+find /usr/lib/jvm/java-1* | head -n 3
+
+JENKINS
+
+/var/lib/jenkins/secrets/initialAdminPassword
+
+https://medium.com/@mudasirhaji/build-and-deploy-code-on-containers-using-ansible-and-automate-the-whole-process-through-jenkins-ea0123f35a55
+
+

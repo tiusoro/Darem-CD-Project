@@ -1,0 +1,59 @@
+# GOTO ROOT USER
+sudo su -
+cd ../..
+clear
+
+# CHANGE HOSTNAME
+vi etc/hostname   # ==> ansible
+	
+# CREATE ANSADMIN USER
+useradd ansadmin
+passwd ansadmin
+
+#MAKE USER HAVE ROOT ACCESS
+visudo   # ==> ansadmin ALL(ALL)       NOPASSWD:ALL
+	
+# ENABLE PASSWORDLESS AUTHENTICATION
+vi etc/ssh/sshd_config   # ==>  PasswordAuthentication yes
+				#PasswordAuthentication no
+
+# RESTART SSHD SERVICE
+sudo systemctl restart sshd
+
+# INSTALL ANSIBLE
+sudo su -
+amazon-linux-extras install ansible2 -y
+
+# VERIFY INSTALLATION
+python --version
+ansible --version
+
+
+*********PART 2***********
+
+
+# ADD DOCKER/KUBERNETES HOST TO ANSIBLE
+vi /etc/ansible/hosts  # ==>  [dockerhost]
+			    #  10.0.1.90
+
+	
+# LOGIN AS ANSADMIN
+sudo su - ansadmin
+
+# GENERATE SSH KEYGEN
+ssh-keygen
+cd /home/ansadmin/.ssh
+ll
+
+# COPY ID TO DOCKER/KUBERNETES HOST
+ssh-copy-id 10.0.1.90
+
+# ALL ANSIBLE EXECUTABLES MUST BE ON ANSADMIN USER
+# TEST CONNECTION
+ansible all -m ping
+ansible all -m command -a uptime
+
+# CREATE DOCKER FOLDER AND GRANT OWNERSHIP TO ANSADMIN
+cd opt/
+mkdir docker
+chown ansadmin:ansadmin docker
